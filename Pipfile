@@ -34,8 +34,7 @@ websockets = "==11.0.1"
 
 [dev-packages]
 black = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.10"
-
-
