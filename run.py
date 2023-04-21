@@ -56,10 +56,7 @@ def get_user_name(user_name: Nameenum):
     if user_name is Nameenum.Arjun:
         return {"Name": f"{user_name}", "message": "The younger son of the house"}
     if user_name is Nameenum.Sanchita:
-        return {
-            "Name": f"{user_name}",
-            "message": "The wife of younder son in the house",
-        }
+        return {"Name": f"{user_name}", "message": "The wife of younder son in the house"}
 
 
 # Pydentic Model
@@ -69,7 +66,7 @@ def create_user(user: User):
     message = "Aadhar and Pan Mandatory" if user.is_adult else "User is a child"
     incoming_user.update({"usr_msg": message})
     return incoming_user
-
+    
 
 @my_app.post("/Product/Details")
 def get_product_details(
