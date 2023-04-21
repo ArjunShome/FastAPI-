@@ -1,1 +1,1 @@
-from .user_model import User    # type: ignore
+from .user_model import User, Product, Product_type    # type: ignore

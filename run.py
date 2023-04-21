@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 from enum import Enum
 
 import uvicorn
-from models import User
+from models import User, Product
+from typing import Annotated
 
 my_app = FastAPI()
 
@@ -55,7 +56,10 @@ def get_user_name(user_name: Nameenum):
     if user_name is Nameenum.Arjun:
         return {"Name": f"{user_name}", "message": "The younger son of the house"}
     if user_name is Nameenum.Sanchita:
-        return {"Name": f"{user_name}", "message": "The wife of younder son in the house"}
+        return {
+            "Name": f"{user_name}",
+            "message": "The wife of younder son in the house",
+        }
 
 
 # Pydentic Model
@@ -67,5 +71,59 @@ def create_user(user: User):
     return incoming_user
 
 
+@my_app.post("/Product/Details")
+def get_product_details(
+    product_detail: Annotated[
+        Product,
+        Body(
+            examples={
+                "Valid Request": {
+                    "summary": "A normal example",
+                    "description": "A **normal** item works correctly.",
+                    "value": {
+                        "product_id": 2,
+                        "product_type": {"type_id": 2, "type_category": "Automobile"},
+                        "product_name": "Hyundai Creta",
+                        "users": {
+                            "id": 2,
+                            "name": "Arjun",
+                            "address": "Kolkata",
+                            "aadhar_number": 111,
+                            "pan_number": 132,
+                            "is_adult": "True",
+                        },
+                    },
+                },
+                "Invalid Request": {
+                    "summary": "An example with invalid product id",
+                    "description": "invalid product id specified and also type id is expected minimum to be 2",
+                    "value": {
+                        "product_id": "ert",
+                        "product_type": {"type_id": 1, "type_category": "Automobile"},
+                        "product_name": "Hyundai Creta",
+                        "users": {
+                            "id": 2,
+                            "name": "Arjun",
+                            "address": "Kolkata",
+                            "aadhar_number": 111,
+                            "pan_number": 132,
+                            "is_adult": "True",
+                        },
+                    },
+                },
+            }
+        ),
+    ]
+):
+    dict_product_detail = product_detail.dict()
+    message = (
+        "Automobile"
+        if product_detail.product_type.type_category == "Vehicle"
+        else "Other"
+    )
+    dict_product_detail.update({"user_mesasge": message})
+    return dict_product_detail
+
+
 if __name__ == "__main__":
-    uvicorn.run("run:my_app", reload=True) #type: ignore
+    uvicorn.run("run:my_app", reload=True)  # type: ignore
