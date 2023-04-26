@@ -1,14 +1,15 @@
 from pydantic import BaseModel, Field
 
-
-class User(BaseModel):
+class BaseUser(BaseModel):
     id: int = Field(title="ID of the User", ge=2)
     name: str = Field("BLA BLA", description="The USer's Name", max_length=5)
     address: str
-    adhar_number: int
-    mobile_number: int
-    pan_number: int
     is_adult: bool
+    mobile_number: int
+    
+class User(BaseUser):
+    adhar_number: int
+    pan_number: int
 
 
 class Product_type(BaseModel):
@@ -38,3 +39,5 @@ class Product(BaseModel):
                 },
             },
         }
+
+     
