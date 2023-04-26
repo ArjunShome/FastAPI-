@@ -2,7 +2,7 @@ from fastapi import FastAPI, Body
 from enum import Enum
 
 import uvicorn
-from models import User, Product
+from models import User, Product, BaseUser
 from typing import Annotated
 
 my_app = FastAPI()
@@ -121,6 +121,11 @@ def get_product_details(
     dict_product_detail.update({"user_mesasge": message})
     return dict_product_detail
 
+
+# Response Model
+@my_app.post("/Users/GetDetails", response_model=User, response_model_exclude={"adhar_number", "pan_number"})
+def get_user(user: User):
+     return user
 
 if __name__ == "__main__":
     uvicorn.run("run:my_app", reload=True)  # type: ignore
